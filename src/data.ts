@@ -147,7 +147,6 @@ export const busStop = {
                 {
                     arrivalTime: dayjs().add(24, 'minute').add(50, 'second'),
                     numOfRemainedStops: 12,
-                    numOfPassengers: 2,
                     numOfPassengers: 7,
                 },
             ],
