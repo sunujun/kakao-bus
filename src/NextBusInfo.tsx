@@ -10,8 +10,8 @@ const NextBusInfo = ({
 }: {
     hasInfo: boolean;
     remainedTimeText: string;
-    numOfRemainedStops: number;
-    seatStatusText: string;
+    numOfRemainedStops?: number;
+    seatStatusText?: string;
 }) => {
     if (!hasInfo) {
         return <Text style={{ color: COLOR.GRAY_2 }}>도착 정보 없음</Text>;
