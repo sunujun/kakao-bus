@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SectionList, StatusBar, StyleSheet, Text } from 'react-native';
+import { SectionList, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import dayjs from 'dayjs';
 import BusInfo from './src/BusInfo';
@@ -12,6 +12,7 @@ import {
     getSections,
     ProcessedNextBusInfo,
 } from './src/data';
+import { COLOR } from './src/color';
 
 const App = () => {
     const sections = getSections(busStop.buses);
@@ -27,6 +28,27 @@ const App = () => {
             clearInterval(interval);
         };
     }, []);
+
+    const renderSectionHeader = ({
+        section: { title },
+    }: {
+        section: {
+            title: '간선버스' | '지선버스' | '직행버스';
+        };
+    }) => (
+        <View
+            style={{
+                paddingLeft: 13,
+                paddingVertical: 3,
+                backgroundColor: COLOR.GRAY_1,
+                borderTopWidth: 0.5,
+                borderBottomWidth: 0.5,
+                borderTopColor: COLOR.GRAY_2,
+                borderBottomColor: COLOR.GRAY_2,
+            }}>
+            <Text style={{ fontSize: 12, color: COLOR.GRAY_4 }}>{title}</Text>
+        </View>
+    );
 
     const renderItem = ({ item: bus }: { item: BusInfoType }) => {
         const numColor = getBusNumColorByType(bus.type);
@@ -74,7 +96,7 @@ const App = () => {
                 <SectionList
                     style={{ flex: 1, width: '100%' }}
                     sections={sections}
-                    renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+                    renderSectionHeader={renderSectionHeader}
                     renderItem={renderItem}
                 />
             </SafeAreaView>
