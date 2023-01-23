@@ -31,6 +31,7 @@ const BusInfo = ({
                 }}>
                 {/* 북마크 */}
                 <BookmarkButton
+                    size={20}
                     isBookmarked={isBookmarked}
                     onPress={onPressBookmark}
                     style={{ paddingHorizontal: 10 }}

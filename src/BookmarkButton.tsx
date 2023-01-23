@@ -7,14 +7,16 @@ const BookmarkButton = ({
     isBookmarked,
     onPress,
     style,
+    size,
 }: {
     isBookmarked: boolean;
     onPress: () => void;
     style: StyleProp<ViewStyle>;
+    size: number;
 }) => {
     return (
         <TouchableOpacity style={style} onPress={onPress}>
-            <Ionicons name="star" size={24} color={isBookmarked ? COLOR.YELLOW : COLOR.GRAY_1} />
+            <Ionicons name="star" size={size} color={isBookmarked ? COLOR.YELLOW : COLOR.GRAY_1} />
         </TouchableOpacity>
     );
 };
