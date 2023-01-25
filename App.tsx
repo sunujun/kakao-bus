@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import dayjs from 'dayjs';
 import BusInfo from './src/BusInfo';
@@ -39,10 +39,11 @@ const App = () => {
         // TODO
     };
     const ListHeaderComponent = () => (
-        <SafeAreaView
+        <View
             style={{
                 backgroundColor: COLOR.GRAY_3,
                 height: 250,
+                paddingTop: StatusBar.currentHeight,
             }}>
             {/* 뒤로가기, 홈 아이콘 */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -76,7 +77,7 @@ const App = () => {
                 />
                 <Margin height={25} />
             </View>
-        </SafeAreaView>
+        </View>
     );
     const ItemSeparatorComponent = () => <View style={{ width: '100%', height: 1, backgroundColor: COLOR.GRAY_1 }} />;
     const ListFooterComponent = () => <Margin height={30} />;
