@@ -18,11 +18,22 @@ const BookmarkButton = ({
     onPress,
     style,
     size,
+    color,
 }: {
     isBookmarked: boolean;
     onPress: () => void;
     style: StyleProp<ViewStyle>;
     size: number;
+    color: {
+        WHITE_BLACK: string;
+        BLACK_WHITE: string;
+        GRAY_1_GRAY_4: string;
+        GRAY_2_GRAY_3: string;
+        GRAY_3_GRAY_2: string;
+        GRAY_4_GRAY_1: string;
+        GRAY_1_GRAY_3: string;
+        GRAY_1_GRAY_2: string;
+    };
 }) => {
     const { isBookmarked, toggleIsBookmarked } = useBookmark(isBookmarkedProp);
 
@@ -33,7 +44,7 @@ const BookmarkButton = ({
                 toggleIsBookmarked();
                 onPress();
             }}>
-            <Ionicons name="star" size={size} color={isBookmarked ? COLOR.YELLOW : COLOR.GRAY_1} />
+            <Ionicons name="star" size={size} color={isBookmarked ? COLOR.YELLOW : color.GRAY_1_GRAY_4} />
         </TouchableOpacity>
     );
 };

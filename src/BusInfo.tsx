@@ -7,6 +7,7 @@ import { ProcessedNextBusInfo } from './data';
 import NextBusInfo from './NextBusInfo';
 
 const BusInfo = ({
+    color,
     isBookmarked,
     onPressBookmark,
     num,
@@ -14,6 +15,16 @@ const BusInfo = ({
     directionDescription,
     processedNextBusInfo,
 }: {
+    color: {
+        WHITE_BLACK: string;
+        BLACK_WHITE: string;
+        GRAY_1_GRAY_4: string;
+        GRAY_2_GRAY_3: string;
+        GRAY_3_GRAY_2: string;
+        GRAY_4_GRAY_1: string;
+        GRAY_1_GRAY_3: string;
+        GRAY_1_GRAY_2: string;
+    };
     isBookmarked: boolean;
     onPressBookmark: () => void;
     num: number;
@@ -22,7 +33,7 @@ const BusInfo = ({
     processedNextBusInfo: ProcessedNextBusInfo[];
 }) => {
     return (
-        <View style={{ flexDirection: 'row', height: 75, backgroundColor: '#FFF' }}>
+        <View style={{ flexDirection: 'row', height: 75, backgroundColor: color.WHITE_BLACK }}>
             <View
                 style={{
                     flex: 0.85,
@@ -32,6 +43,7 @@ const BusInfo = ({
                 {/* 북마크 */}
                 <BookmarkButton
                     size={20}
+                    color={color}
                     isBookmarked={isBookmarked}
                     onPress={onPressBookmark}
                     style={{ paddingHorizontal: 10 }}
@@ -50,6 +62,7 @@ const BusInfo = ({
                     {processedNextBusInfo.map((info, index) => (
                         <NextBusInfo
                             key={`next-bus-info-${index}`}
+                            color={color}
                             hasInfo={info.hasInfo}
                             remainedTimeText={info.remainedTimeText}
                             numOfRemainedStops={info.numOfRemainedStops}
@@ -58,7 +71,7 @@ const BusInfo = ({
                     ))}
                 </View>
                 {/* 알람 아이콘 */}
-                <AlarmButton onPress={() => {}} style={{ paddingHorizontal: 15 }} />
+                <AlarmButton color={color} onPress={() => {}} style={{ paddingHorizontal: 15 }} />
             </View>
         </View>
     );
