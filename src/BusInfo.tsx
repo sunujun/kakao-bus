@@ -22,7 +22,7 @@ const BusInfo = ({
     processedNextBusInfo: ProcessedNextBusInfo[];
 }) => {
     return (
-        <View style={{ flexDirection: 'row', height: 75 }}>
+        <View style={{ flexDirection: 'row', height: 75, backgroundColor: '#FFF' }}>
             <View
                 style={{
                     flex: 1,

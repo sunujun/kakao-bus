@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React, { useCallback, useEffect, useState } from 'react';
+import { RefreshControl, SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import dayjs from 'dayjs';
 import BusInfo from './src/BusInfo';
@@ -23,12 +23,29 @@ const busStopBookmarkPadding = 6;
 const App = () => {
     const sections = getSections(busStop.buses);
     const [now, setNow] = useState(dayjs());
+    const [refreshing, setRefreshing] = useState(false);
+
+    const onRefresh = () => {
+        setRefreshing(true);
+    };
+
+    useEffect(() => {
+        if (refreshing) {
+            setNow(dayjs());
+            setRefreshing(false);
+
+            // setTimeout(() => {
+            //   // API refetch 완료되는 시점.
+            //   setRefreshing(false);
+            // }, 3000);
+        }
+    }, [refreshing]);
 
     useEffect(() => {
         const interval = setInterval(() => {
             const newNow = dayjs();
             setNow(newNow);
-        }, 1000);
+        }, 5000);
 
         return () => {
             clearInterval(interval);
@@ -38,48 +55,53 @@ const App = () => {
     const onPressBusStopBookmark = () => {
         // TODO
     };
-    const ListHeaderComponent = () => (
-        <View
-            style={{
-                backgroundColor: COLOR.GRAY_3,
-                height: 250,
-                paddingTop: StatusBar.currentHeight,
-            }}>
-            {/* 뒤로가기, 홈 아이콘 */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <TouchableOpacity style={{ padding: 10 }}>
-                    <SimpleLineIcons name="arrow-left" size={20} color={COLOR.WHITE} />
-                </TouchableOpacity>
-                <TouchableOpacity style={{ padding: 10 }}>
-                    <SimpleLineIcons name="home" size={20} color={COLOR.WHITE} />
-                </TouchableOpacity>
-            </View>
-            {/* 정류소 번호, 이름, 방향 */}
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Margin height={10} />
-                <Text style={{ color: COLOR.WHITE, fontSize: 13 }}>{busStop.id}</Text>
-                <Margin height={4} />
-                <Text style={{ color: COLOR.WHITE, fontSize: 20 }}>{busStop.name}</Text>
-                <Margin height={4} />
-                <Text style={{ color: COLOR.GRAY_1, fontSize: 14 }}>{busStop.directionDescription}</Text>
-                <Margin height={20} />
-                {/* 북마크 */}
-                <BookmarkButton
-                    size={busStopBookmarkSize}
-                    isBookmarked={busStop.isBookmarked}
-                    onPress={onPressBusStopBookmark}
-                    style={{
-                        borderWidth: 0.3,
-                        borderColor: COLOR.GRAY_1,
-                        borderRadius: (busStopBookmarkSize + busStopBookmarkPadding * 2) / 2,
-                        padding: busStopBookmarkPadding,
-                    }}
-                />
-                <Margin height={25} />
-            </View>
-        </View>
+
+    const ListHeaderComponent = useCallback(
+        () => (
+            <SafeAreaView
+                style={{
+                    backgroundColor: COLOR.GRAY_3,
+                    height: 250,
+                }}>
+                {/* 뒤로가기, 홈 아이콘 */}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TouchableOpacity style={{ padding: 10 }}>
+                        <SimpleLineIcons name="arrow-left" size={20} color={COLOR.WHITE} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ padding: 10 }}>
+                        <SimpleLineIcons name="home" size={20} color={COLOR.WHITE} />
+                    </TouchableOpacity>
+                </View>
+                {/* 정류소 번호, 이름, 방향 */}
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Margin height={10} />
+                    <Text style={{ color: COLOR.WHITE, fontSize: 13 }}>{busStop.id}</Text>
+                    <Margin height={4} />
+                    <Text style={{ color: COLOR.WHITE, fontSize: 20 }}>{busStop.name}</Text>
+                    <Margin height={4} />
+                    <Text style={{ color: COLOR.GRAY_1, fontSize: 14 }}>{busStop.directionDescription}</Text>
+                    <Margin height={20} />
+                    {/* 북마크 */}
+                    <BookmarkButton
+                        size={busStopBookmarkSize}
+                        isBookmarked={busStop.isBookmarked}
+                        onPress={onPressBusStopBookmark}
+                        style={{
+                            borderWidth: 0.3,
+                            borderColor: COLOR.GRAY_1,
+                            borderRadius: (busStopBookmarkSize + busStopBookmarkPadding * 2) / 2,
+                            padding: busStopBookmarkPadding,
+                        }}
+                    />
+                    <Margin height={25} />
+                </View>
+            </SafeAreaView>
+        ),
+        [],
     );
+
     const ItemSeparatorComponent = () => <View style={{ width: '100%', height: 1, backgroundColor: COLOR.GRAY_1 }} />;
+
     const ListFooterComponent = () => <Margin height={30} />;
 
     const renderSectionHeader = ({
@@ -154,6 +176,7 @@ const App = () => {
                     ListFooterComponent={ListFooterComponent}
                     renderSectionHeader={renderSectionHeader}
                     renderItem={renderItem}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 />
             </View>
         </SafeAreaProvider>
