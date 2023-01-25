@@ -39,7 +39,11 @@ const App = () => {
         // TODO
     };
     const ListHeaderComponent = () => (
-        <SafeAreaView style={{ backgroundColor: COLOR.GRAY_3 }}>
+        <SafeAreaView
+            style={{
+                backgroundColor: COLOR.GRAY_3,
+                height: 250,
+            }}>
             {/* 뒤로가기, 홈 아이콘 */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ padding: 10 }}>
@@ -74,6 +78,8 @@ const App = () => {
             </View>
         </SafeAreaView>
     );
+    const ItemSeparatorComponent = () => <View style={{ width: '100%', height: 1, backgroundColor: COLOR.GRAY_1 }} />;
+    const ListFooterComponent = () => <Margin height={30} />;
 
     const renderSectionHeader = ({
         section: { title },
@@ -143,6 +149,8 @@ const App = () => {
                     style={{ flex: 1, width: '100%' }}
                     sections={sections}
                     ListHeaderComponent={ListHeaderComponent}
+                    ItemSeparatorComponent={ItemSeparatorComponent}
+                    ListFooterComponent={ListFooterComponent}
                     renderSectionHeader={renderSectionHeader}
                     renderItem={renderItem}
                 />
